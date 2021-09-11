@@ -1,9 +1,10 @@
 import React from 'react'
+import Videos from '../components/Videos'
 
 const Home = () => {
   return (
     <div>
-      Home
+      <Videos/>
     </div>
   )
 }
