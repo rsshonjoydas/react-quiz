@@ -1,9 +1,11 @@
+import { getDatabase, ref, set } from '@firebase/database'
 import _ from 'lodash'
 import React, { useEffect, useReducer, useState } from 'react'
-import { useParams } from 'react-router'
+import { useHistory, useParams } from 'react-router'
 import Answer from '../components/Answer'
 import MiniPlayer from '../components/MiniPlayer'
 import ProgressBar from '../components/ProgressBar'
+import { useAuth } from '../contexts/AuthContext'
 import useQuestion from '../hooks/useQuestion'
 
 const initialState = null;
@@ -34,6 +36,8 @@ const Quiz = () => {
   const [currentQuestion, setCurrentQuestion] = useState(0)
 
   const [qna, dispatch] = useReducer(reducer, initialState);
+  const { currentUser } = useAuth();
+  const history = useHistory();
 
   useEffect(() => {
     dispatch({
@@ -68,6 +72,25 @@ const Quiz = () => {
   // TODO: calculate percentage of progress
   const percentage = questions.length > 0 ? ((currentQuestion + 1) / questions.length) * 100 : 0;
 
+  // TODO: submit quiz
+  async function submit() {
+    const { uid } = currentUser;
+
+    const db = getDatabase();
+    const resultRef = ref(db, `result/${uid}`)
+
+    await set(resultRef, {
+      [id]: qna
+    })
+
+    history.push({
+      pathname: `/result/${id}`,
+      state: {
+        qna,
+      }
+    })
+  }
+
   return (
     <>
       {loading && <div>Loading...</div>}
@@ -77,7 +100,7 @@ const Quiz = () => {
           <h1>{qna[currentQuestion].title}</h1>
           <h4>Question can have multiple answers</h4>
           <Answer options={qna[currentQuestion].options} handleChange={handleAnswerChange} />
-          <ProgressBar next={nextQuestion} prev={prevQuestion} progress={percentage} />
+          <ProgressBar next={nextQuestion} prev={prevQuestion} progress={percentage} submit={submit} />
           <MiniPlayer />
         </>
       )}
