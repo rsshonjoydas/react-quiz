@@ -99,8 +99,17 @@ const Quiz = () => {
         <>
           <h1>{qna[currentQuestion].title}</h1>
           <h4>Question can have multiple answers</h4>
-          <Answer options={qna[currentQuestion].options} handleChange={handleAnswerChange} />
-          <ProgressBar next={nextQuestion} prev={prevQuestion} progress={percentage} submit={submit} />
+          <Answer
+            input
+            options={qna[currentQuestion].options}
+            handleChange={handleAnswerChange}
+          />
+          <ProgressBar
+            next={nextQuestion}
+            prev={prevQuestion}
+            progress={percentage}
+            submit={submit}
+          />
           <MiniPlayer />
         </>
       )}
