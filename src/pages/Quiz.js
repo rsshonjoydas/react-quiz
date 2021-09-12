@@ -51,6 +51,23 @@ const Quiz = () => {
     })
   }
 
+  // TODO: handle users clicks the next button to get the next questions
+  function nextQuestion() {
+    if (currentQuestion + 1 < questions.length) {
+      setCurrentQuestion((prevCurrentQuestion) => prevCurrentQuestion + 1)
+    }
+  }
+
+  // TODO: handle users clicks the previous button to get the previous questions
+  function prevQuestion() {
+    if (currentQuestion >= 1 && currentQuestion <= questions.length) {
+      setCurrentQuestion((prevCurrentQuestion) => prevCurrentQuestion - 1)
+    }
+  }
+
+  // TODO: calculate percentage of progress
+  const percentage = questions.length > 0 ? ((currentQuestion + 1) / questions.length) * 100 : 0;
+
   return (
     <>
       {loading && <div>Loading...</div>}
@@ -60,7 +77,7 @@ const Quiz = () => {
           <h1>{qna[currentQuestion].title}</h1>
           <h4>Question can have multiple answers</h4>
           <Answer options={qna[currentQuestion].options} handleChange={handleAnswerChange} />
-          <ProgressBar />
+          <ProgressBar next={nextQuestion} prev={prevQuestion} progress={percentage} />
           <MiniPlayer />
         </>
       )}
