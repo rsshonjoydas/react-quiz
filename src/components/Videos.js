@@ -19,10 +19,24 @@ const Videos = () => {
         >
           {videos.map((video) =>
             video.noq > 0 ? (
-              <Link to={`/quiz/${video.youtubeID}`} key={video.youtubeID}>
-                <Video title={video.title} id={video.youtubeID} noq={video.noq} />
+              <Link to={{
+                pathname: `/quiz/${video.youtubeID}`,
+                state: {
+                  videoTitle: video.title
+                }
+              }} key={video.youtubeID}>
+                <Video
+                  title={video.title}
+                  id={video.youtubeID}
+                  noq={video.noq}
+                />
               </Link>) : (
-              <Video title={video.title} id={video.youtubeID} noq={video.noq} key={video.youtubeID} />
+              <Video
+                title={video.title}
+                id={video.youtubeID}
+                noq={video.noq}
+                key={video.youtubeID}
+              />
             )
           )}
         </InfiniteScroll>
